@@ -15,11 +15,11 @@ def write_to_png(graph, file, dpi=300, **kwargs):
     pydot_graph = nx.drawing.nx_pydot.to_pydot(graph)
 
     # print(pydot_graph.source)
-    pydot_graph.set('dpi', dpi)
-    pydot_graph.set('simplify', True)
-    pydot_graph.set('nodesep', 0.5)
-    pydot_graph.set('ranksep', 0.5)
-    pydot_graph.set('layout', 'dot')
+    pydot_graph.set("dpi", dpi)
+    pydot_graph.set("simplify", True)
+    pydot_graph.set("nodesep", 0.5)
+    pydot_graph.set("ranksep", 0.5)
+    pydot_graph.set("layout", "dot")
     # pydot_graph.set_size('"10!,10!"')
     ## pydot_graph.set('size', (5000,5000))
     # pydot_graph.set_node_defaults(fontsize=11)
@@ -28,6 +28,8 @@ def write_to_png(graph, file, dpi=300, **kwargs):
     for k in kwargs:
         pydot_graph.set(k, kwargs[k])
     pydot_graph.write_png(file)
+
+
 """
     = Digraph('companies', filename='companies.gv',
               edge_attr={'weight': '1',
@@ -51,4 +53,5 @@ f.attr(size='5000,5000')
 
 def display_mdp(mdp_spec):
     from IPython.display import display, Image
+
     display(Image(graph_to_png(mdp_spec.to_graph())))

@@ -24,6 +24,4 @@ from hiive.visualization.mdpviz.reward import Reward
 from hiive.visualization.mdpviz.state import State
 from hiive.visualization.mdpviz.transition import Transition
 from hiive.visualization.mdpviz.transition_probabilities import TransitionProbabilities
-from hiive.visualization.mdpviz.utils import (graph_to_png, write_to_png, display_mdp)
-
-
+from hiive.visualization.mdpviz.utils import graph_to_png, write_to_png, display_mdp

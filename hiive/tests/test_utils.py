@@ -29,6 +29,7 @@ def test_check_square_stochastic_nonnegative_array_2():
 
 # check: P - square, stochastic and non-negative object np.arrays
 
+
 def test_check_P_square_stochastic_nonnegative_object_array():
     P = np.empty(ACTIONS, dtype=object)
     R = np.random.rand(STATES, ACTIONS)
@@ -54,6 +55,7 @@ def test_check_P_square_stochastic_nonnegative_object_sparse():
 
 
 # check: P - square, stochastic and non-negative lists
+
 
 def test_check_P_square_stochastic_nonnegative_list_array():
     P = []
@@ -81,6 +83,7 @@ def test_check_P_square_stochastic_nonnegative_list_sparse():
 
 # check: P - square, stochastic and non-negative dicts
 
+
 def test_check_P_square_stochastic_nonnegative_dict_array():
     P = {}
     R = np.random.rand(STATES, ACTIONS)
@@ -107,6 +110,7 @@ def test_check_P_square_stochastic_nonnegative_dict_sparse():
 
 # check: R - square stochastic and non-negative sparse
 
+
 def test_check_R_square_stochastic_nonnegative_sparse():
     P = np.zeros((ACTIONS, STATES, STATES))
     R = sp.sparse.csr_matrix(np.random.rand(STATES, ACTIONS))
@@ -116,6 +120,7 @@ def test_check_R_square_stochastic_nonnegative_sparse():
 
 
 # check: R - square, stochastic and non-negative object np.arrays
+
 
 def test_check_R_square_stochastic_nonnegative_object_array():
     P = np.zeros((ACTIONS, STATES, STATES))
@@ -146,6 +151,7 @@ def test_check_R_square_stochastic_nonnegative_object_sparse():
 
 # checkSquareStochastic: square, stochastic and non-negative
 
+
 def test_checkSquareStochastic_square_stochastic_nonnegative_array():
     P = np.random.rand(STATES, STATES)
     for s in range(STATES):
@@ -171,6 +177,7 @@ def test_checkSquareStochastic_square_stochastic_nonnegative_sparse():
 
 # checkSquareStochastic: eye
 
+
 def test_checkSquareStochastic_eye_array():
     P = np.eye(STATES)
     assert mdptoolbox.util.checkSquareStochastic(P) is None
@@ -195,28 +202,31 @@ def test_check_vector_R():
 def test_check_vector_R_error():
     R = np.random.rand(STATES + 1)
     P = [np.matrix(np.eye(STATES))] * 3
-    assert_raises(mdptoolbox.error.InvalidError,
-                  mdptoolbox.util.check, P=P, R=R)
+    assert_raises(mdptoolbox.error.InvalidError, mdptoolbox.util.check, P=P, R=R)
 
 
 # Exception tests
 def test_check_P_shape_error_1():
-    P = np.eye(STATES)[:STATES - 1, :STATES]
-    assert_raises(mdptoolbox.error.InvalidError, mdptoolbox.util.check,
-                  P=P, R=np.random.rand(STATES, ACTIONS))
+    P = np.eye(STATES)[: STATES - 1, :STATES]
+    assert_raises(
+        mdptoolbox.error.InvalidError,
+        mdptoolbox.util.check,
+        P=P,
+        R=np.random.rand(STATES, ACTIONS),
+    )
 
 
 def test_check_P_shape_error_2():
     P = (np.random.rand(9, 9), np.random.rand(9, 9), np.random.rand(9, 5))
-    assert_raises(mdptoolbox.error.InvalidError, mdptoolbox.util.check,
-                  P=P, R=np.random.rand(9))
+    assert_raises(
+        mdptoolbox.error.InvalidError, mdptoolbox.util.check, P=P, R=np.random.rand(9)
+    )
 
 
 def test_check_R_shape_error_1():
     R = (np.random.rand(9, 9), np.random.rand(9, 9), np.random.rand(9, 5))
     P = np.random.rand(3, 10, 10)
-    assert_raises(mdptoolbox.error.InvalidError, mdptoolbox.util.check,
-                  P=P, R=R)
+    assert_raises(mdptoolbox.error.InvalidError, mdptoolbox.util.check, P=P, R=R)
 
 
 def test_isSqaure_tuple():
@@ -250,20 +260,27 @@ def test_isNonNegative_string():
 
 
 def test_checkSquareStochastic_SquareError():
-    P = np.eye(STATES)[:STATES - 1, :STATES]
-    assert_raises(mdptoolbox.error.SquareError,
-                  mdptoolbox.util.checkSquareStochastic, matrix=P)
+    P = np.eye(STATES)[: STATES - 1, :STATES]
+    assert_raises(
+        mdptoolbox.error.SquareError, mdptoolbox.util.checkSquareStochastic, matrix=P
+    )
 
 
 def test_checkSquareStochastic_StochasticError():
     P = np.random.rand(STATES, STATES)
-    assert_raises(mdptoolbox.error.StochasticError,
-                  mdptoolbox.util.checkSquareStochastic, matrix=P)
+    assert_raises(
+        mdptoolbox.error.StochasticError,
+        mdptoolbox.util.checkSquareStochastic,
+        matrix=P,
+    )
 
 
 def test_checkSquareStochastic_NonNegativeError():
     P = np.eye(STATES)
     P[0, 0] = -0.5
     P[0, 1] = 1.5
-    assert_raises(mdptoolbox.error.NonNegativeError,
-                  mdptoolbox.util.checkSquareStochastic, matrix=P)
+    assert_raises(
+        mdptoolbox.error.NonNegativeError,
+        mdptoolbox.util.checkSquareStochastic,
+        matrix=P,
+    )

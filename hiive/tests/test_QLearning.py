@@ -17,8 +17,10 @@ def test_QLearning_small():
     np.random.seed(0)
     sdp = mdptoolbox.mdp.QLearning(P_small, R_small, 0.9)
     sdp.run()
-    q = np.matrix("33.330108655211646, 40.82109564847122; "
-                  "34.37431040682546, 29.672368452303164")
+    q = np.matrix(
+        "33.330108655211646, 40.82109564847122; "
+        "34.37431040682546, 29.672368452303164"
+    )
     v = np.matrix("40.82109564847122, 34.37431040682546")
     p = (1, 0)
     assert (np.absolute(sdp.Q - q) < SMALLNUM).all()
@@ -30,8 +32,10 @@ def test_QLearning_small_sparse():
     np.random.seed(0)
     sdp = mdptoolbox.mdp.QLearning(P_sparse, R_small, 0.9)
     sdp.run()
-    q = np.matrix("33.330108655211646, 40.82109564847122; "
-                  "34.37431040682546, 29.672368452303164")
+    q = np.matrix(
+        "33.330108655211646, 40.82109564847122; "
+        "34.37431040682546, 29.672368452303164"
+    )
     v = np.matrix("40.82109564847122, 34.37431040682546")
     p = (1, 0)
     assert (np.absolute(sdp.Q - q) < SMALLNUM).all()
@@ -43,9 +47,11 @@ def test_QLearning_forest():
     np.random.seed(0)
     sdp = mdptoolbox.mdp.QLearning(P_forest, R_forest, gamma=0.96)
     sdp.run()
-    q = np.matrix("11.198908998901134, 10.34652034142302; "
-                  "10.74229967143465, 11.741057920409865; "
-                  "2.8698000059458546, 12.259732864170232")
+    q = np.matrix(
+        "11.198908998901134, 10.34652034142302; "
+        "10.74229967143465, 11.741057920409865; "
+        "2.8698000059458546, 12.259732864170232"
+    )
     v = np.matrix("11.198908998901134, 11.741057920409865, 12.259732864170232")
     p = (0, 1, 1)
     assert (np.absolute(sdp.Q - q) < SMALLNUM).all()

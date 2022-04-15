@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#def test_JacksCarRental():
+# def test_JacksCarRental():
 #    S = 21 ** 2
 #    A = 11
 #    P = np.zeros((A, S, S))
@@ -21,37 +21,37 @@
 #                    pass
 #                P[a, s, s1] = 1
 #                R[a, s, s1] = 10 * (cs - cs1) - 2 * abs(a)
-#    
+#
 #    inst = PolicyIteration(P, R, 0.9)
 #    #assert (inst.policy == )
 #
-#def test_JacksCarRental2():
+# def test_JacksCarRental2():
 #    pass
 #
-#def test_GamblersProblem():
+# def test_GamblersProblem():
 #    inst = ValueIteration()
 #    #assert (inst.policy == )
 
 # checkSquareStochastic: not square, stochastic and non-negative
 
-#@raises(ValueError(mdperr["mat_square"]))
-#def test_checkSquareStochastic_notsquare_stochastic_nonnegative_array():
+# @raises(ValueError(mdperr["mat_square"]))
+# def test_checkSquareStochastic_notsquare_stochastic_nonnegative_array():
 #    P = np.eye(STATES, STATES + 1)
 #    inst.checkSquareStochastic(P)
 #
-#@raises(ValueError(mdperr["mat_square"]))
-#def test_checkSquareStochastic_notsquare_stochastic_nonnegative_matrix():
+# @raises(ValueError(mdperr["mat_square"]))
+# def test_checkSquareStochastic_notsquare_stochastic_nonnegative_matrix():
 #    P = np.matrix(np.eye(STATES, STATES + 1))
 #    inst.checkSquareStochastic(P)
 #
-#@raises(ValueError(mdperr["mat_square"]))
-#def test_checkSquareStochastic_notsquare_stochastic_nonnegative_sparse():
+# @raises(ValueError(mdperr["mat_square"]))
+# def test_checkSquareStochastic_notsquare_stochastic_nonnegative_sparse():
 #    P = sp.sparse.eye(STATES, STATES + 1).tocsr()
 #    inst.checkSquareStochastic(P)
 
 # checkSquareStochastic: square, not stochastic and non-negative
-    
-#def test_checkSquareStochastic_square_notstochastic_nonnegative_array():
+
+# def test_checkSquareStochastic_square_notstochastic_nonnegative_array():
 #    P = np.eye(STATES)
 #    i = randint(STATES)
 #    j = randint(STATES)
@@ -61,7 +61,7 @@
 #    except ValueError(mdperr["mat_stoch"]):
 #        pass
 #
-#def test_checkSquareStochastic_square_notstochastic_nonnegative_matrix():
+# def test_checkSquareStochastic_square_notstochastic_nonnegative_matrix():
 #    P = np.matrix(np.eye(STATES))
 #    i = randint(STATES)
 #    j = randint(STATES)
@@ -71,7 +71,7 @@
 #    except ValueError(mdperr["mat_stoch"]):
 #        pass
 #
-#def test_checkSquareStochastic_square_notstochastic_nonnegative_sparse():
+# def test_checkSquareStochastic_square_notstochastic_nonnegative_sparse():
 #    P = sp.sparse.eye(STATES, STATES).tolil()
 #    i = randint(STATES)
 #    j = randint(STATES)
@@ -84,7 +84,7 @@
 
 # checkSquareStochastic: square, stochastic and negative
 
-#def test_checkSquareStochastic_square_stochastic_negative_array():
+# def test_checkSquareStochastic_square_stochastic_negative_array():
 #    P = np.eye(STATES, STATES)
 #    i = randint(STATES)
 #    j = randint(STATES)
@@ -97,7 +97,7 @@
 #    except ValueError(mdperr["mat_nonneg"]):
 #        pass
 #
-#def test_checkSquareStochastic_square_stochastic_negative_matrix():
+# def test_checkSquareStochastic_square_stochastic_negative_matrix():
 #    P = np.matrix(np.eye(STATES, STATES))
 #    i = randint(STATES)
 #    j = randint(STATES)
@@ -110,7 +110,7 @@
 #    except ValueError(mdperr["mat_nonneg"]):
 #        pass
 #
-#def test_checkSquareStochastic_square_stochastic_negative_sparse():
+# def test_checkSquareStochastic_square_stochastic_negative_sparse():
 #    P = sp.sparse.eye(STATES, STATES)
 #    i = randint(STATES)
 #    j = randint(STATES)
@@ -123,7 +123,7 @@
 #    except ValueError(mdperr["mat_nonneg"]):
 #        pass
 
-#def test_check_square_stochastic_array_Rtranspose():
+# def test_check_square_stochastic_array_Rtranspose():
 #    P = np.array([np.eye(STATES), np.eye(STATES)])
 #    R = np.array([ones(STATES), ones(STATES)])
 #    assert inst.check(P, R) == (True, "R is wrong way")

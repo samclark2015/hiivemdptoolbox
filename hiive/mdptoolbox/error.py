@@ -50,6 +50,7 @@ StochasticError
 # ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
 
+
 class Error(Exception):
     """Base class for exceptions in this module."""
 

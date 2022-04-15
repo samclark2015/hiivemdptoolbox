@@ -2,12 +2,14 @@ import gym
 import numpy as np
 
 from hiive.visualization.mdpviz.state import State
-from hiive.visualization.mdpviz._mdp_env_visualization_mixin import _MDPEnvVisualizationMixin
+from hiive.visualization.mdpviz._mdp_env_visualization_mixin import (
+    _MDPEnvVisualizationMixin,
+)
 from hiive.visualization.mdpviz.transition_probabilities import TransitionProbabilities
 
 
 class MDPDiscreteEnv(gym.Env, _MDPEnvVisualizationMixin):
-    metadata = {'render.modes': ['human', 'rgb_array', 'png']}
+    metadata = {"render.modes": ["human", "rgb_array", "png"]}
 
     def __init__(self, mdp_spec, start_state: State = None):
         self.render_widget = None
@@ -28,7 +30,10 @@ class MDPDiscreteEnv(gym.Env, _MDPEnvVisualizationMixin):
         """
         P[s][a] == [(probability, nextstate, reward, done), ...]
         """
-        self.P = {s: {a: [] for a in range(mdp_spec.num_actions)} for s in range(mdp_spec.num_states)}
+        self.P = {
+            s: {a: [] for a in range(mdp_spec.num_actions)}
+            for s in range(mdp_spec.num_states)
+        }
         for s in range(self.mdp_spec.num_states):
             for a in range(self.mdp_spec.num_actions):
                 state = self.mdp_spec.states[s]
@@ -57,15 +62,19 @@ class MDPDiscreteEnv(gym.Env, _MDPEnvVisualizationMixin):
 
         if not self._is_done:
             reward_probs = self.transitions.rewards[self._state, action]
-            reward = np.random.choice(list(reward_probs.keys()), p=list(reward_probs.values()))
+            reward = np.random.choice(
+                list(reward_probs.keys()), p=list(reward_probs.values())
+            )
 
             next_state_probs = self.transitions.next_states[self._state, action]
-            self._state = np.random.choice(list(next_state_probs.keys()), p=list(next_state_probs.values()))
+            self._state = np.random.choice(
+                list(next_state_probs.keys()), p=list(next_state_probs.values())
+            )
             self._is_done = self._state.terminal_state
         else:
             reward = 0
 
         return self._state.index, reward, self._is_done, None
 
-    def render(self, mode='human'):
+    def render(self, mode="human"):
         return self._render(mode, False)

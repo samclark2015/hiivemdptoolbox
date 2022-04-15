@@ -8,10 +8,10 @@ class State:
         self.data = name if extra_data is None else extra_data
 
     def __repr__(self):
-        return 'State(%s, %s, %s)' % (self.name, self.index, self.terminal_state)
+        return "State(%s, %s, %s)" % (self.name, self.index, self.terminal_state)
 
     def __str__(self):
-        ret = f'{self.name}'.replace(' ', '_').replace(':', '_').replace(',', '_')
+        ret = f"{self.name}".replace(" ", "_").replace(":", "_").replace(",", "_")
         return ret
 
     def __hash__(self):

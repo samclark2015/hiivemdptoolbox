@@ -25,18 +25,24 @@ def setup(S, A):
         os.remove(DB_sql)
     with sqlite3.connect(DB_sql) as conn:
         c = conn.cursor()
-        cmd = '''
+        cmd = """
             CREATE TABLE info (name TEXT, value INTEGER);
             INSERT INTO info VALUES('states', %s);
-            INSERT INTO info VALUES('actions', %s);''' % (S, A)
+            INSERT INTO info VALUES('actions', %s);""" % (
+            S,
+            A,
+        )
         c.executescript(cmd)
         for a in range(1, A + 1):
             a_sparse = a - 1
             PP_sparse = dok_matrix((S, S))
-            cmd = '''
+            cmd = """
                 CREATE TABLE transition%s (row INTEGER, col INTEGER, prob REAL);
                 CREATE TABLE reward%s (state INTEGER PRIMARY KEY ASC, val REAL);
-                ''' % (a, a)
+                """ % (
+                a,
+                a,
+            )
             c.executescript(cmd)
             cmd = "INSERT INTO reward%s(val) VALUES(?)" % a
             c.executemany(cmd, zip(R_sparse.tolist()))

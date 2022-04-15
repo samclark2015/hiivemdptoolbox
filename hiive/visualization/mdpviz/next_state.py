@@ -8,11 +8,11 @@ class NextState(Outcome):
         super().__init__(state, weight)
 
     def __repr__(self):
-        return 'NextState(%s, %s)' % (self.outcome, self.weight)
+        return "NextState(%s, %s)" % (self.outcome, self.weight)
 
     def __str__(self):
         return self.__repr__()
 
     @staticmethod
-    def get_choices(next_states: typing.Iterable['NextState']):
+    def get_choices(next_states: typing.Iterable["NextState"]):
         return Outcome.get_choices(next_states)

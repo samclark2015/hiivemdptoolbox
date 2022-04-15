@@ -169,7 +169,7 @@ def forest(S=3, r1=4, r2=2, p=0.1, is_sparse=False):
         P = []
         rows = list(range(S)) * 2
         cols = [0] * S + list(range(1, S)) + [S - 1]
-        vals = [p] * S + [1-p] * S
+        vals = [p] * S + [1 - p] * S
         P.append(_sp.coo_matrix((vals, (rows, cols)), shape=(S, S)).tocsr())
         rows = list(range(S))
         cols = [0] * S
@@ -179,7 +179,7 @@ def forest(S=3, r1=4, r2=2, p=0.1, is_sparse=False):
         P = _np.zeros((2, S, S))
         P[0, :, :] = (1 - p) * _np.diag(_np.ones(S - 1), 1)
         P[0, :, 0] = p
-        P[0, S - 1, S - 1] = (1 - p)
+        P[0, S - 1, S - 1] = 1 - p
         P[1, :, :] = _np.zeros((S, S))
         P[1, :, 0] = 1
     # Definition of Reward matrix
@@ -188,13 +188,11 @@ def forest(S=3, r1=4, r2=2, p=0.1, is_sparse=False):
     R[:, 1] = _np.ones(S)
     R[0, 1] = 0
     R[S - 1, 1] = r2
-    return(P, R)
+    return (P, R)
 
 
 def _randDense(states, actions, mask):
-    """Generate random dense ``P`` and ``R``. See ``rand`` for details.
-
-    """
+    """Generate random dense ``P`` and ``R``. See ``rand`` for details."""
     # definition of transition matrix : square stochastic matrix
     P = _np.zeros((actions, states, states))
     # definition of reward matrix (values between -1 and +1)
@@ -216,15 +214,14 @@ def _randDense(states, actions, mask):
                 m[_np.random.randint(0, states)] = 1
             P[action][state] = m * _np.random.random(states)
             P[action][state] = P[action][state] / P[action][state].sum()
-            R[action][state] = (m * (2 * _np.random.random(states) -
-                                _np.ones(states, dtype=int)))
-    return(P, R)
+            R[action][state] = m * (
+                2 * _np.random.random(states) - _np.ones(states, dtype=int)
+            )
+    return (P, R)
 
 
 def _randSparse(states, actions, mask):
-    """Generate random sparse ``P`` and ``R``. See ``rand`` for details.
-
-    """
+    """Generate random sparse ``P`` and ``R``. See ``rand`` for details."""
     # definition of transition matrix : square stochastic matrix
     P = [None] * actions
     # definition of reward matrix (values between -1 and +1)
@@ -238,8 +235,8 @@ def _randSparse(states, actions, mask):
         for state in range(states):
             if mask is None:
                 m = _np.random.random(states)
-                m[m <= 2/3.0] = 0
-                m[m > 2/3.0] = 1
+                m[m <= 2 / 3.0] = 0
+                m[m > 2 / 3.0] = 1
             elif mask.shape == (actions, states, states):
                 m = mask[action][state]  # mask[action, state, :]
             else:
@@ -256,7 +253,7 @@ def _randSparse(states, actions, mask):
                 cols = nz[1]
             vals = _np.random.random(n)
             vals = vals / vals.sum()
-            reward = 2*_np.random.random(n) - _np.ones(n)
+            reward = 2 * _np.random.random(n) - _np.ones(n)
             PP[state, cols] = vals
             RR[state, cols] = reward
         # PP.tocsr() takes the same amount of time as PP.tocoo().tocsr()
@@ -264,7 +261,7 @@ def _randSparse(states, actions, mask):
         # probably "better"
         P[action] = PP.tocsr()
         R[action] = RR.tocsr()
-    return(P, R)
+    return (P, R)
 
 
 def rand(S, A, is_sparse=False, mask=None):
@@ -351,9 +348,10 @@ def rand(S, A, is_sparse=False, mask=None):
     if mask is not None:
         # the mask needs to be SxS or AxSxS
         try:
-            assert mask.shape in ((S, S), (A, S, S)), (
-                "'mask' must have dimensions S×S or A×S×S."
-            )
+            assert mask.shape in (
+                (S, S),
+                (A, S, S),
+            ), "'mask' must have dimensions S×S or A×S×S."
         except AttributeError:
             raise TypeError("'mask' must be a numpy array or matrix.")
     # generate the transition and reward matrices based on S, A and mask
@@ -361,7 +359,7 @@ def rand(S, A, is_sparse=False, mask=None):
         P, R = _randSparse(S, A, mask)
     else:
         P, R = _randDense(S, A, mask)
-    return(P, R)
+    return (P, R)
 
 
 def small():
@@ -405,13 +403,14 @@ def small():
     R = _np.array([[5, 10], [-1, 2]])
     return P, R
 
-def openai(env_name:str, render:bool=False, **kwargs):
+
+def openai(env_name: str, render: bool = False, **kwargs):
     """
-    Generate a MDPToolbox-formatted version of a *discrete* OpenAI Gym environment. 
+    Generate a MDPToolbox-formatted version of a *discrete* OpenAI Gym environment.
 
     You can find the list of available gym environments here: https://gym.openai.com/envs/#classic_control
 
-    You'll have to look at the source code of the environments for available kwargs; as it is not well documented.  
+    You'll have to look at the source code of the environments for available kwargs; as it is not well documented.
 
     This function is used to generate a transition probability
     (``A`` × ``S`` × ``S``) array ``P`` and a reward (``S`` × ``A``) matrix
@@ -420,15 +419,15 @@ def openai(env_name:str, render:bool=False, **kwargs):
     Parameters
     ---------
     env_name : str
-        The name of the Open AI gym environment to model. 
-    render : bool 
-        Flag to render the environment via gym's `render()` function. 
-    
+        The name of the Open AI gym environment to model.
+    render : bool
+        Flag to render the environment via gym's `render()` function.
+
     Returns
     -------
     out : tuple
         ``out[0]`` contains the transition probability matrix P  and ``out[1]``
-        contains the reward matrix R. 
+        contains the reward matrix R.
     Examples
     --------
     >>> import hiive.mdptoolbox.example
@@ -439,7 +438,7 @@ def openai(env_name:str, render:bool=False, **kwargs):
     array([[[0., 0., 0., ..., 0., 0., 0.],
         [0., 0., 0., ..., 0., 0., 0.],
         [0., 0., 0., ..., 0., 0., 0.],
-    <BLANKLINE> 
+    <BLANKLINE>
         [0., 0., 0., ..., 1., 0., 0.],
         [0., 0., 0., ..., 0., 1., 0.],
         [0., 0., 0., ..., 0., 0., 1.]]])

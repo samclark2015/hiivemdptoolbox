@@ -25,7 +25,7 @@ def _one_round_dmdp():
         action_1 = dsl.action()
 
         start & (action_0 | action_1) > end
-        start & action_1 > dsl.reward(1.)
+        start & action_1 > dsl.reward(1.0)
 
         return mdp.validate()
 
@@ -95,7 +95,7 @@ def _two_round_nmdp():
 
 
 # noinspection PyStatementEffect,PyPep8Naming
-def  _multi_round_nmdp():
+def _multi_round_nmdp():
     with dsl.new() as mdp:
         start = dsl.state()
         end = dsl.terminal_state()
@@ -118,18 +118,16 @@ TWO_ROUND_NMDP = _two_round_nmdp()
 
 MULTI_ROUND_NMDP = _multi_round_nmdp()
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     env = TWO_ROUND_DMDP.to_env()
 
     from matplotlib import pyplot
     import time
 
-
     def display_env():
         env.render()
         env.render_widget.width = 500
         time.sleep(0.200)
-
 
     for _ in range(3):
         env.reset()

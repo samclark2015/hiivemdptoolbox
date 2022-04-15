@@ -15,12 +15,12 @@ here.
 """
 
 # Copyright (c) 2014 Steven A. W. Cordwell
-# 
+#
 # All rights reserved.
-# 
+#
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions are met:
-# 
+#
 #   * Redistributions of source code must retain the above copyright notice,
 #     this list of conditions and the following disclaimer.
 #   * Redistributions in binary form must reproduce the above copyright notice,
@@ -29,7 +29,7 @@ here.
 #   * Neither the name of the <ORGANIZATION> nor the names of its contributors
 #     may be used to endorse or promote products derived from this software
 #     without specific prior written permission.
-# 
+#
 # THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
 # AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
 # IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
@@ -60,43 +60,45 @@ ACTIONS = 4
 
 def convertStateToIndex(population, fire):
     """Convert state parameters to transition probability matrix index.
-    
+
     Parameters
     ----------
     population : int
         The population abundance class of the threatened species.
     fire : int
         The time in years since last fire.
-    
+
     Returns
     -------
     index : int
         The index into the transition probability matrix that corresponds to
         the state parameters.
-    
+
     """
-    assert 0 <= population < POPULATION_CLASSES, "'population' must be in " \
-                                                 "(0, 1...%s)" % str(POPULATION_CLASSES - 1)
-    assert 0 <= fire < FIRE_CLASSES, "'fire' must be in " \
-                                     "(0, 1...%s) " % str(FIRE_CLASSES - 1)
-    return (population * FIRE_CLASSES + fire)
+    assert (
+        0 <= population < POPULATION_CLASSES
+    ), "'population' must be in " "(0, 1...%s)" % str(POPULATION_CLASSES - 1)
+    assert 0 <= fire < FIRE_CLASSES, "'fire' must be in " "(0, 1...%s) " % str(
+        FIRE_CLASSES - 1
+    )
+    return population * FIRE_CLASSES + fire
 
 
 def convertIndexToState(index):
     """Convert transition probability matrix index to state parameters.
-    
+
     Parameters
     ----------
     index : int
         The index into the transition probability matrix that corresponds to
         the state parameters.
-    
+
     Returns
     -------
     population, fire : tuple of int
         ``population``, the population abundance class of the threatened
         species. ``fire``, the time in years since last fire.
-    
+
     """
     assert index < STATES
     population = index // FIRE_CLASSES
@@ -106,34 +108,34 @@ def convertIndexToState(index):
 
 def getHabitatSuitability(years):
     """The habitat suitability of a patch relatve to the time since last fire.
-    
+
     The habitat quality is low immediately after a fire, rises rapidly until
     five years after a fire, and declines once the habitat is mature. See
     Figure 2 in Possingham and Tuck (1997) for more details.
-    
+
     Parameters
     ----------
     years : int
         Years since last fire.
-    
+
     Returns
     -------
     r : float
         The habitat suitability.
-    
+
     """
     assert years >= 0, "'years' must be a positive number"
     if years <= 5:
-        return (0.2 * years)
+        return 0.2 * years
     elif 5 <= years <= 10:
-        return (-0.1 * years + 1.5)
+        return -0.1 * years + 1.5
     else:
-        return (0.5)
+        return 0.5
 
 
 def getTransitionProbabilities(s, x, F, a):
     """Calculate the transition probabilities for the given state and action.
-    
+
     Parameters
     ----------
     s : float
@@ -145,13 +147,13 @@ def getTransitionProbabilities(s, x, F, a):
         The number of years since a fire
     a : int
         The action to be performed
-    
+
     Returns
     -------
     prob : array
         The transition probabilities as a vector from state (x, F) to every
         other state given action ``a`` is performed.
-    
+
     """
     assert 0 <= x < POPULATION_CLASSES
     assert 0 <= F < FIRE_CLASSES
@@ -227,30 +229,30 @@ def getTransitionProbabilities(s, x, F, a):
         # then the final state is going to be the same as that for x_1, so we
         # need to add the probabilities together.
         prob[new_state] += (1 - s) * (1 - r)  # abundance goes down
-    return (prob)
+    return prob
 
 
 def getTransitionAndRewardArrays(s):
     """Generate the fire management transition and reward matrices.
-    
+
     The output arrays from this function are valid input to the mdptoolbox.mdp
     classes.
-    
+
     Let ``S`` = number of states, and ``A`` = number of actions.
-    
+
     Parameters
     ----------
     s : float
         The class-independent probability of the population staying in its
         current population abundance class.
-    
+
     Returns
     -------
     out : tuple
         ``out[0]`` contains the transition probability matrices P and
         ``out[1]`` contains the reward vector R. P is an  ``A`` × ``S`` × ``S``
         numpy array and R is a numpy vector of length ``S``.
-    
+
     """
     assert 0 <= s <= 1, "'s' must be between 0 and 1"
     # The transition probability array
@@ -273,40 +275,40 @@ def getTransitionAndRewardArrays(s):
 
 def solveMDP():
     """Solve the problem as a finite horizon Markov decision process.
-    
+
     The optimal policy at each stage is found using backwards induction.
     Possingham and Tuck report strategies for a 50 year time horizon, so the
     number of stages for the finite horizon algorithm is set to 50. There is no
     discount factor reported, so we set it to 0.96 rather arbitrarily.
-    
+
     Returns
     -------
     mdp : mdptoolbox.mdp.FiniteHorizon
         The PyMDPtoolbox object that represents a finite horizon MDP. The
         optimal policy for each stage is accessed with mdp.policy, which is a
         numpy array with 50 columns (one for each stage).
-    
+
     """
     P, R = getTransitionAndRewardArrays(0.5)
     sdp = mdp.FiniteHorizon(P, R, 0.96, 50)
     sdp.run()
-    return (sdp)
+    return sdp
 
 
 def printPolicy(policy):
     """Print out a policy vector as a table to console
-    
+
     Let ``S`` = number of states.
-    
+
     The output is a table that has the population class as rows, and the years
     since a fire as the columns. The items in the table are the optimal action
     for that population class and years since fire combination.
-    
+
     Parameters
     ----------
     p : array
         ``p`` is a numpy array of length ``S``.
-    
+
     """
     p = np.array(policy).reshape(POPULATION_CLASSES, FIRE_CLASSES)
     range_F = range(FIRE_CLASSES)
@@ -318,7 +320,7 @@ def printPolicy(policy):
 
 def simulateTransition(x, s, r, fire):
     """Simulate a state transition.
-    
+
     Parameters
     ----------
     x : int
@@ -332,15 +334,16 @@ def simulateTransition(x, s, r, fire):
         time in years since the last fire.
     fire : bool
         True if there has been a fire in the current year, otherwise False.
-    
+
     Returns
     -------
     x : int
         The new abundance class of the threatened species.
-    
+
     """
-    assert 0 <= x < POPULATION_CLASSES, "'x' must be in " \
-                                        "{0, 1...%s}" % POPULATION_CLASSES - 1
+    assert 0 <= x < POPULATION_CLASSES, (
+        "'x' must be in " "{0, 1...%s}" % POPULATION_CLASSES - 1
+    )
     assert 0 <= s <= 1, "'s' must be in [0; 1]"
     assert 0 <= r <= 1, "'r' must be in [0; 1]"
     assert fire in (True, False), "'fire' must be a boolean value"
@@ -363,7 +366,7 @@ def simulateTransition(x, s, r, fire):
     # Add the effect of a fire, making sure x doesn't go to -1
     if fire and (x > 0):
         x -= 1
-    return (x)
+    return x
 
 
 def _runTests():
@@ -374,10 +377,8 @@ def _runTests():
     assert getHabitatSuitability(8) == 0.7
     assert getHabitatSuitability(10) == 0.5
     assert getHabitatSuitability(15) == 0.5
-    assert convertIndexToState(STATES - 1) == (POPULATION_CLASSES - 1,
-                                               FIRE_CLASSES - 1)
-    assert convertIndexToState(STATES - 2) == (POPULATION_CLASSES - 1,
-                                               FIRE_CLASSES - 2)
+    assert convertIndexToState(STATES - 1) == (POPULATION_CLASSES - 1, FIRE_CLASSES - 1)
+    assert convertIndexToState(STATES - 2) == (POPULATION_CLASSES - 1, FIRE_CLASSES - 2)
     assert convertIndexToState(0) == (0, 0)
     for idx in range(STATES):
         s1, s2 = convertIndexToState(idx)

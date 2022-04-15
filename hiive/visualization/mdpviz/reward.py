@@ -8,11 +8,11 @@ class Reward(Outcome):
         super().__init__(value, weight)
 
     def __repr__(self):
-        return 'Reward(%s, %s)' % (self.outcome, self.weight)
+        return "Reward(%s, %s)" % (self.outcome, self.weight)
 
     def __str__(self):
         return self.__repr__()
 
     @staticmethod
-    def get_choices(rewards: typing.Iterable['Reward']):
-        return Outcome.get_choices(rewards) or {0.: 1.}
+    def get_choices(rewards: typing.Iterable["Reward"]):
+        return Outcome.get_choices(rewards) or {0.0: 1.0}

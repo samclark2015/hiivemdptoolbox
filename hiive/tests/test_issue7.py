@@ -9,45 +9,53 @@ import hiive.mdptoolbox
 class BaseTestIssue7(object):
     discount = 0.9
     P = [None] * 2
-    P[0] = np.array([
-        [ 0.  ,  0.  ,  0.  ,  0.64,  0.  ,  0.  ,  0.36,  0.  ,  0.  ],
-        [ 0.  ,  0.  ,  0.  ,  0.  ,  0.93,  0.  ,  0.  ,  0.07,  0.  ],
-        [ 0.  ,  0.  ,  0.  ,  0.  ,  0.  ,  0.2 ,  0.  ,  0.  ,  0.8 ],
-        [ 0.  ,  0.  ,  0.  ,  1.  ,  0.  ,  0.  ,  0.  ,  0.  ,  0.  ],
-        [ 0.  ,  0.  ,  0.  ,  0.  ,  1.  ,  0.  ,  0.  ,  0.  ,  0.  ],
-        [ 0.  ,  0.  ,  0.  ,  0.  ,  0.  ,  1.  ,  0.  ,  0.  ,  0.  ],
-        [ 0.  ,  0.  ,  0.  ,  0.  ,  0.  ,  0.  ,  1.  ,  0.  ,  0.  ],
-        [ 0.  ,  0.  ,  0.  ,  0.  ,  0.  ,  0.  ,  0.  ,  1.  ,  0.  ],
-        [ 0.  ,  0.  ,  0.  ,  0.  ,  0.  ,  0.  ,  0.  ,  0.  ,  1.  ]
-    ])
-    P[1] = np.array([
-        [ 0.  ,  0.  ,  0.4 ,  0.  ,  0.6 ,  0.  ,  0.  ,  0.  ,  0.  ],
-        [ 0.  ,  0.  ,  0.  ,  0.  ,  1.  ,  0.  ,  0.  ,  0.  ,  0.  ],
-        [ 0.  ,  0.  ,  1.  ,  0.  ,  0.  ,  0.  ,  0.  ,  0.  ,  0.  ],
-        [ 0.  ,  0.  ,  0.  ,  0.  ,  0.87,  0.13,  0.  ,  0.  ,  0.  ],
-        [ 0.  ,  0.  ,  0.  ,  0.  ,  1.  ,  0.  ,  0.  ,  0.  ,  0.  ],
-        [ 0.  ,  0.  ,  0.  ,  0.  ,  0.  ,  1.  ,  0.  ,  0.  ,  0.  ],
-        [ 0.  ,  0.  ,  0.  ,  0.  ,  0.  ,  0.  ,  0.  ,  0.11,  0.89],
-        [ 0.  ,  0.  ,  0.  ,  0.  ,  0.  ,  0.  ,  0.  ,  1.  ,  0.  ],
-        [ 0.  ,  0.  ,  0.  ,  0.  ,  0.  ,  0.  ,  0.  ,  0.  ,  1.  ]
-    ])
+    P[0] = np.array(
+        [
+            [0.0, 0.0, 0.0, 0.64, 0.0, 0.0, 0.36, 0.0, 0.0],
+            [0.0, 0.0, 0.0, 0.0, 0.93, 0.0, 0.0, 0.07, 0.0],
+            [0.0, 0.0, 0.0, 0.0, 0.0, 0.2, 0.0, 0.0, 0.8],
+            [0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0],
+            [0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0],
+            [0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0],
+            [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0],
+            [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0],
+            [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0],
+        ]
+    )
+    P[1] = np.array(
+        [
+            [0.0, 0.0, 0.4, 0.0, 0.6, 0.0, 0.0, 0.0, 0.0],
+            [0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0],
+            [0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0],
+            [0.0, 0.0, 0.0, 0.0, 0.87, 0.13, 0.0, 0.0, 0.0],
+            [0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0],
+            [0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0],
+            [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.11, 0.89],
+            [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0],
+            [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0],
+        ]
+    )
 
     R = [None] * 2
     R[0] = np.zeros((9, 9))
-    R[1] = np.array([
-        [ 0.,  0.,  0.,  0.,  1.,  0.,  0.,  0.,  0.],
-        [ 0.,  0.,  0.,  0.,  1.,  0.,  0.,  0.,  0.],
-        [ 0.,  0.,  0.,  0.,  0.,  0.,  0.,  0.,  0.],
-        [ 0.,  0.,  0.,  0.,  0.,  0.,  0.,  0.,  0.],
-        [ 0.,  0.,  0.,  0.,  0.,  0.,  0.,  0.,  0.],
-        [ 0.,  0.,  0.,  0.,  0.,  0.,  0.,  0.,  0.],
-        [ 0.,  0.,  0.,  0.,  0.,  0.,  0.,  0.,  0.],
-        [ 0.,  0.,  0.,  0.,  0.,  0.,  0.,  0.,  0.],
-        [ 0.,  0.,  0.,  0.,  0.,  0.,  0.,  0.,  0.]
-    ])
-    
-    computed_R = (np.array((0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0)),
-                  np.array((0.6, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0)))
+    R[1] = np.array(
+        [
+            [0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0],
+            [0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0],
+            [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0],
+            [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0],
+            [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0],
+            [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0],
+            [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0],
+            [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0],
+            [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0],
+        ]
+    )
+
+    computed_R = (
+        np.array((0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0)),
+        np.array((0.6, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0)),
+    )
 
     policy = (1, 1, 0, 0, 0, 0, 0, 0, 0)
 
@@ -86,8 +94,8 @@ class BaseTestIssue7(object):
             assert (sdp.R[1] == self.computed_R[1]).all()
         assert not sp.issparse(sdp.P[0])
         assert not sp.issparse(sdp.P[1])
-        #assert sp.issparse(sdp.R[0])
-        #assert sp.issparse(sdp.R[1])
+        # assert sp.issparse(sdp.R[0])
+        # assert sp.issparse(sdp.R[1])
         sdp.run()
         if algorithm != hiive.mdptoolbox.mdp.QLearning:
             assert sdp.policy == self.policy, sdp.policy
@@ -101,14 +109,15 @@ class BaseTestIssue7(object):
             assert (sdp.R[1] == self.computed_R[1]).all()
         assert sp.issparse(sdp.P[0])
         assert sp.issparse(sdp.P[1])
-        #assert sp.issparse(sdp.R[0])
-        #assert sp.issparse(sdp.R[1])
+        # assert sp.issparse(sdp.R[0])
+        # assert sp.issparse(sdp.R[1])
         sdp.run()
         if algorithm != hiive.mdptoolbox.mdp.QLearning:
             assert sdp.policy == self.policy, sdp.policy
 
+
 # Needs some work before can use, need to pass horizon
-#class TestFiniteHorizon(BaseTestIssue7):
+# class TestFiniteHorizon(BaseTestIssue7):
 #
 #    def test_dense_P_dense_R(self):
 #        self.dense_P_dense_R(mdptoolbox.mdpviz.FiniteHorizon)
@@ -122,7 +131,7 @@ class BaseTestIssue7(object):
 #    def test_sparse_P_sparse_R(self):
 #       self.sparse_P_sparse_R(mdptoolbox.mdpviz.FiniteHorizon)
 
-#class TestLP(BaseTestIssue7):
+# class TestLP(BaseTestIssue7):
 #
 #    def test_dense_P_dense_R(self):
 #        self.dense_P_dense_R(mdptoolbox.mdpviz.LP)
@@ -136,8 +145,8 @@ class BaseTestIssue7(object):
 #    def test_sparse_P_sparse_R(self):
 #       self.sparse_P_sparse_R(mdptoolbox.mdpviz.LP)
 
-class TestPolicyIteration(BaseTestIssue7):
 
+class TestPolicyIteration(BaseTestIssue7):
     def test_dense_P_dense_R(self):
         self.dense_P_dense_R(hiive.mdptoolbox.mdp.PolicyIteration)
 
@@ -148,10 +157,10 @@ class TestPolicyIteration(BaseTestIssue7):
         self.dense_P_sparse_R(hiive.mdptoolbox.mdp.PolicyIteration)
 
     def test_sparse_P_sparse_R(self):
-       self.sparse_P_sparse_R(hiive.mdptoolbox.mdp.PolicyIteration)
+        self.sparse_P_sparse_R(hiive.mdptoolbox.mdp.PolicyIteration)
+
 
 class TestPolicyIterationModified(BaseTestIssue7):
-
     def test_dense_P_dense_R(self):
         self.dense_P_dense_R(hiive.mdptoolbox.mdp.PolicyIterationModified)
 
@@ -162,10 +171,10 @@ class TestPolicyIterationModified(BaseTestIssue7):
         self.dense_P_sparse_R(hiive.mdptoolbox.mdp.PolicyIterationModified)
 
     def test_sparse_P_sparse_R(self):
-       self.sparse_P_sparse_R(hiive.mdptoolbox.mdp.PolicyIterationModified)
+        self.sparse_P_sparse_R(hiive.mdptoolbox.mdp.PolicyIterationModified)
+
 
 class TestQLearning(BaseTestIssue7):
-
     def test_dense_P_dense_R(self):
         self.dense_P_dense_R(hiive.mdptoolbox.mdp.QLearning)
 
@@ -176,10 +185,10 @@ class TestQLearning(BaseTestIssue7):
         self.dense_P_sparse_R(hiive.mdptoolbox.mdp.QLearning)
 
     def test_sparse_P_sparse_R(self):
-       self.sparse_P_sparse_R(hiive.mdptoolbox.mdp.QLearning)
+        self.sparse_P_sparse_R(hiive.mdptoolbox.mdp.QLearning)
+
 
 class TestValueIteration(BaseTestIssue7):
-
     def test_dense_P_dense_R(self):
         self.dense_P_dense_R(hiive.mdptoolbox.mdp.ValueIteration)
 
@@ -190,10 +199,10 @@ class TestValueIteration(BaseTestIssue7):
         self.dense_P_sparse_R(hiive.mdptoolbox.mdp.ValueIteration)
 
     def test_sparse_P_sparse_R(self):
-       self.sparse_P_sparse_R(hiive.mdptoolbox.mdp.ValueIteration)
+        self.sparse_P_sparse_R(hiive.mdptoolbox.mdp.ValueIteration)
+
 
 class TestRelativeValueIteration(BaseTestIssue7):
-
     def test_dense_P_dense_R(self):
         self.dense_P_dense_R(hiive.mdptoolbox.mdp.RelativeValueIteration)
 
@@ -204,10 +213,10 @@ class TestRelativeValueIteration(BaseTestIssue7):
         self.dense_P_sparse_R(hiive.mdptoolbox.mdp.RelativeValueIteration)
 
     def test_sparse_P_sparse_R(self):
-       self.sparse_P_sparse_R(hiive.mdptoolbox.mdp.RelativeValueIteration)
+        self.sparse_P_sparse_R(hiive.mdptoolbox.mdp.RelativeValueIteration)
+
 
 class TestValueIterationGS(BaseTestIssue7):
-
     def test_dense_P_dense_R(self):
         self.dense_P_dense_R(hiive.mdptoolbox.mdp.ValueIterationGS)
 
@@ -218,4 +227,4 @@ class TestValueIterationGS(BaseTestIssue7):
         self.dense_P_sparse_R(hiive.mdptoolbox.mdp.ValueIterationGS)
 
     def test_sparse_P_sparse_R(self):
-       self.sparse_P_sparse_R(hiive.mdptoolbox.mdp.ValueIterationGS)
+        self.sparse_P_sparse_R(hiive.mdptoolbox.mdp.ValueIterationGS)

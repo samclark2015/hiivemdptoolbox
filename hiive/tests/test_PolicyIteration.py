@@ -10,9 +10,17 @@ import scipy.sparse as sp
 
 import hiive.mdptoolbox
 
-from .utils import SMALLNUM, P_forest, R_forest, P_small, R_small, P_sparse, \
-    P_forest_sparse, R_forest_sparse, \
-    assert_sequence_almost_equal
+from .utils import (
+    SMALLNUM,
+    P_forest,
+    R_forest,
+    P_small,
+    R_small,
+    P_sparse,
+    P_forest_sparse,
+    R_forest_sparse,
+    assert_sequence_almost_equal,
+)
 
 
 def test_PolicyIteration_init_policy0():
@@ -29,7 +37,7 @@ def test_PolicyIteration_init_policy0_forest():
 
 def test_PolicyIteration_computePpolicyPRpolicy_forest():
     sdp = mdptoolbox.mdp.PolicyIteration(P_forest, R_forest, 0.9)
-    P1 = np.matrix('0.1, 0.9, 0; 1, 0, 0; 0.1, 0, 0.9').A
+    P1 = np.matrix("0.1, 0.9, 0; 1, 0, 0; 0.1, 0, 0.9").A
     R1 = np.array([0, 1, 4])
     Ppolicy, Rpolicy = sdp._computePpolicyPRpolicy()
     assert (np.absolute(Ppolicy - P1) < SMALLNUM).all()
@@ -121,14 +129,23 @@ def test_PolicyIterative_forest():
 
 
 def test_PolicyIterative_forest_sparse():
-    sdp = mdptoolbox.mdp.PolicyIteration(P_forest_sparse, R_forest_sparse,
-                                         0.96)
+    sdp = mdptoolbox.mdp.PolicyIteration(P_forest_sparse, R_forest_sparse, 0.96)
     sdp.run()
     # v, p and itr from Octave MDPtoolbox
-    v = np.array([26.8301859311444, 28.0723241686974, 29.5099841658652,
-                  31.1739424959205, 33.0998201927438, 35.3288453048078,
-                  37.9087354808078, 40.8947194808078, 44.3507194808078,
-                  48.3507194808078])
+    v = np.array(
+        [
+            26.8301859311444,
+            28.0723241686974,
+            29.5099841658652,
+            31.1739424959205,
+            33.0998201927438,
+            35.3288453048078,
+            37.9087354808078,
+            40.8947194808078,
+            44.3507194808078,
+            48.3507194808078,
+        ]
+    )
     p = (0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
     itr = 9
     assert sdp.policy == p
@@ -137,8 +154,10 @@ def test_PolicyIterative_forest_sparse():
 
 
 def test_goggle_code_issue_5():
-    P = [sp.csr_matrix([[0.5, 0.5], [0.8, 0.2]]),
-         sp.csr_matrix([[0.0, 1.0], [0.1, 0.9]])]
+    P = [
+        sp.csr_matrix([[0.5, 0.5], [0.8, 0.2]]),
+        sp.csr_matrix([[0.0, 1.0], [0.1, 0.9]]),
+    ]
     P = np.array(P)
     R = np.array([[5, 10], [-1, 2]])
     pi = mdptoolbox.mdp.PolicyIteration(P, R, 0.96)

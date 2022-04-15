@@ -15,7 +15,6 @@ from .utils import SMALLNUM, P_small, R_small
 
 
 class TestUnitsMDP(object):
-
     def test_MDP_has_startRun_method(self):
         P, R = mdptoolbox.example.small()
         sdp = mdptoolbox.mdp.MDP(P, R, None, None, None)
@@ -34,28 +33,39 @@ class TestUnitsMDP(object):
 
 
 class TestMDP(object):
-    P = (((0.0, 0.0, 0.6, 0.4, 0.0),
-          (0.0, 0.0, 0.0, 0.0, 1.0),
-          (0.0, 0.0, 1.0, 0.0, 0.0),
-          (0.0, 0.0, 0.0, 1.0, 0.0),
-          (0.0, 0.0, 0.0, 0.0, 1.0)),
-         ((0.0, 0.4, 0.0, 0.0, 0.6),
-          (0.0, 1.0, 0.0, 0.0, 0.0),
-          (0.0, 0.0, 0.0, 0.0, 1.0),
-          (0.0, 0.0, 0.0, 0.0, 1.0),
-          (0.0, 0.0, 0.0, 0.0, 1.0)))
-    R = (((0, 0, 0, 0, 0),
-          (0, 0, 0, 0, 0),
-          (0, 0, 0, 0, 0),
-          (0, 0, 0, 0, 0),
-          (0, 0, 0, 0, 0)),
-         ((0, 0, 0, 0, 1),
-          (0, 0, 0, 0, 0),
-          (0, 0, 0, 0, 0),
-          (0, 0, 0, 0, 0),
-          (0, 0, 0, 0, 0)))
-    computed_R = ((0.0, 0.0, 0.0, 0.0, 0.0),
-                  (0.6, 0.0, 0.0, 0.0, 0.0))
+    P = (
+        (
+            (0.0, 0.0, 0.6, 0.4, 0.0),
+            (0.0, 0.0, 0.0, 0.0, 1.0),
+            (0.0, 0.0, 1.0, 0.0, 0.0),
+            (0.0, 0.0, 0.0, 1.0, 0.0),
+            (0.0, 0.0, 0.0, 0.0, 1.0),
+        ),
+        (
+            (0.0, 0.4, 0.0, 0.0, 0.6),
+            (0.0, 1.0, 0.0, 0.0, 0.0),
+            (0.0, 0.0, 0.0, 0.0, 1.0),
+            (0.0, 0.0, 0.0, 0.0, 1.0),
+            (0.0, 0.0, 0.0, 0.0, 1.0),
+        ),
+    )
+    R = (
+        (
+            (0, 0, 0, 0, 0),
+            (0, 0, 0, 0, 0),
+            (0, 0, 0, 0, 0),
+            (0, 0, 0, 0, 0),
+            (0, 0, 0, 0, 0),
+        ),
+        (
+            (0, 0, 0, 0, 1),
+            (0, 0, 0, 0, 0),
+            (0, 0, 0, 0, 0),
+            (0, 0, 0, 0, 0),
+            (0, 0, 0, 0, 0),
+        ),
+    )
+    computed_R = ((0.0, 0.0, 0.0, 0.0, 0.0), (0.6, 0.0, 0.0, 0.0, 0.0))
 
     def test_a(self):
         P = np.array(self.P)
@@ -114,12 +124,12 @@ class TestMDP(object):
 
 def test_MDP_P_R_1():
     P1 = []
-    P1.append(np.array(np.matrix('0.5 0.5; 0.8 0.2')))
-    P1.append(np.array(np.matrix('0 1; 0.1 0.9')))
+    P1.append(np.array(np.matrix("0.5 0.5; 0.8 0.2")))
+    P1.append(np.array(np.matrix("0 1; 0.1 0.9")))
     P1 = tuple(P1)
     R1 = []
-    R1.append(np.array(np.matrix('5, -1')))
-    R1.append(np.array(np.matrix('10, 2')))
+    R1.append(np.array(np.matrix("5, -1")))
+    R1.append(np.array(np.matrix("10, 2")))
     R1 = tuple(R1)
     a = mdptoolbox.mdp.MDP(P_small, R_small, None, None, None)
     assert type(a.P) == type(P1)
@@ -132,12 +142,12 @@ def test_MDP_P_R_1():
 def test_MDP_P_R_2():
     R = np.array([[[5, 10], [-1, 2]], [[1, 2], [3, 4]]])
     P1 = []
-    P1.append(np.array(np.matrix('0.5 0.5; 0.8 0.2')))
-    P1.append(np.array(np.matrix('0 1; 0.1 0.9')))
+    P1.append(np.array(np.matrix("0.5 0.5; 0.8 0.2")))
+    P1.append(np.array(np.matrix("0 1; 0.1 0.9")))
     P1 = tuple(P1)
     R1 = []
-    R1.append(np.array(np.matrix('7.5, -0.4')))
-    R1.append(np.array(np.matrix('2, 3.9')))
+    R1.append(np.array(np.matrix("7.5, -0.4")))
+    R1.append(np.array(np.matrix("2, 3.9")))
     R1 = tuple(R1)
     a = mdptoolbox.mdp.MDP(P_small, R, None, None, None)
     assert type(a.P) == type(P1)
@@ -149,10 +159,10 @@ def test_MDP_P_R_2():
 
 def test_MDP_P_R_3():
     P = np.array([[[0.6116, 0.3884], [0, 1]], [[0.6674, 0.3326], [0, 1]]])
-    R = np.array([[[-0.2433, 0.7073],[0, 0.1871]],[[-0.0069, 0.6433],[0, 0.2898]]])
+    R = np.array([[[-0.2433, 0.7073], [0, 0.1871]], [[-0.0069, 0.6433], [0, 0.2898]]])
     PR = []
-    PR.append(np.array(np.matrix('0.12591304, 0.1871')))
-    PR.append(np.array(np.matrix('0.20935652,0.2898')))
+    PR.append(np.array(np.matrix("0.12591304, 0.1871")))
+    PR.append(np.array(np.matrix("0.20935652,0.2898")))
     PR = tuple(PR)
     a = mdptoolbox.mdp.MDP(P, R, None, None, None)
     for kk in range(2):

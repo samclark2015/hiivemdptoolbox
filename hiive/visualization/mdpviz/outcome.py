@@ -14,14 +14,17 @@ class Outcome:
         self.outcome = outcome
 
     @staticmethod
-    def get_choices(outcomes: typing.Iterable['Outcome']):
+    def get_choices(outcomes: typing.Iterable["Outcome"]):
         """Normalize outcomes and deduplicate into a Dict[outcome, probability]."""
 
         # Deduplicate elements
         deduped_outcomes = defaultdict(float)
-        total_weight = 0.
+        total_weight = 0.0
         for outcome in outcomes:
             deduped_outcomes[outcome.outcome] += outcome.weight
             total_weight += outcome.weight
 
-        return {outcome: weight / total_weight for outcome, weight in deduped_outcomes.items()}
+        return {
+            outcome: weight / total_weight
+            for outcome, weight in deduped_outcomes.items()
+        }

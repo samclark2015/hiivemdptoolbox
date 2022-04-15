@@ -20,10 +20,10 @@ def test_ValueIteration_small():
     v = np.array((40.048625392716822, 33.65371175967546))
     p = (1, 0)
     itr = 26
-    assert (sdp.max_iter == 28)
+    assert sdp.max_iter == 28
     assert (np.absolute(np.array(sdp.V) - v) < SMALLNUM).all()
-    assert (sdp.policy == p)
-    assert (sdp.iter == itr)
+    assert sdp.policy == p
+    assert sdp.iter == itr
 
 
 def test_ValueIteration_small_sparse():
@@ -32,10 +32,10 @@ def test_ValueIteration_small_sparse():
     v = np.array((40.048625392716822, 33.65371175967546))
     p = (1, 0)
     itr = 26
-    assert (sdp.max_iter == 28)
+    assert sdp.max_iter == 28
     assert (np.absolute(np.array(sdp.V) - v) < SMALLNUM).all()
-    assert (sdp.policy == p)
-    assert (sdp.iter == itr)
+    assert sdp.policy == p
+    assert sdp.iter == itr
 
 
 def test_ValueIteration_forest():

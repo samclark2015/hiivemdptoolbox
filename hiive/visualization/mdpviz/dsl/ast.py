@@ -35,7 +35,7 @@ class TransitionInfo(object):
         self.has_outcome = has_outcome
 
     def __repr__(self):
-        return '%s(%s)' % (self.__class__.__name__, self.__dict__)
+        return "%s(%s)" % (self.__class__.__name__, self.__dict__)
 
     @property
     def fully_specified(self):
@@ -53,14 +53,14 @@ class Node(object):
             self._transition_info = self.apply(TransitionInfoVisitor())
         return self._transition_info
 
-    def apply(self, visitor: 'NodeVisitor') -> typing.Any:
+    def apply(self, visitor: "NodeVisitor") -> typing.Any:
         return visitor.visit_atom(self)
-    
+
     def __or__(self, other):
         return Alternatives([self]) | other
 
     def __repr__(self):
-        return '%s(%s)' % (self.__class__.__name__, self.__dict__)
+        return "%s(%s)" % (self.__class__.__name__, self.__dict__)
 
 
 class SupportConjunction(object):
@@ -84,6 +84,7 @@ class Transition(object):
     def replace(self, state=None, action=None, outcome=None):
         def not_already_set(new, current):
             return not new or not current
+
         # TODO: replace with value errors!
         assert not_already_set(state, self.state), (state, self.state)
         assert not_already_set(action, self.action), (action, self.action)
@@ -101,7 +102,7 @@ class Alternatives(Node, SupportConjunction, SupportMapping):
 
         self.alternatives = alternatives
 
-    def apply(self, visitor: 'NodeVisitor'):
+    def apply(self, visitor: "NodeVisitor"):
         return visitor.visit_alternatives(self)
 
     def __or__(self, other: Node):
@@ -114,7 +115,7 @@ class Alternatives(Node, SupportConjunction, SupportMapping):
     def __mul__(self, prob):
         # noinspection PyUnresolvedReferences
         return Alternatives([alternative * prob for alternative in self.alternatives])
-    
+
 
 class Reward(Node):
     def __init__(self, reward: hiive.visualization.mdpviz.reward.Reward):
@@ -123,9 +124,13 @@ class Reward(Node):
         self.reward = reward
 
     def __mul__(self, other):
-        return Reward(hiive.visualization.mdpviz.reward.Reward(self.reward.outcome, self.reward.weight * other))
+        return Reward(
+            hiive.visualization.mdpviz.reward.Reward(
+                self.reward.outcome, self.reward.weight * other
+            )
+        )
 
-    def apply(self, visitor: 'NodeVisitor'):
+    def apply(self, visitor: "NodeVisitor"):
         return visitor.visit_reward(self)
 
 
@@ -135,7 +140,7 @@ class Action(Node, SupportConjunction, SupportMapping):
 
         self.action = action
 
-    def apply(self, visitor: 'NodeVisitor'):
+    def apply(self, visitor: "NodeVisitor"):
         return visitor.visit_action(self)
 
 
@@ -146,12 +151,14 @@ class State(Node, SupportConjunction, SupportMapping):
         self.state = state
 
     def __mul__(self, other):
-        return WeightedState(hiive.visualization.mdpviz.next_state.NextState(self.state, other))
+        return WeightedState(
+            hiive.visualization.mdpviz.next_state.NextState(self.state, other)
+        )
 
     def __gt__(self, other):
         return Mapping(self, other)
 
-    def apply(self, visitor: 'NodeVisitor'):
+    def apply(self, visitor: "NodeVisitor"):
         return visitor.visit_state(self)
 
 
@@ -163,9 +170,12 @@ class WeightedState(Node):
 
     def __mul__(self, other):
         return WeightedState(
-            hiive.visualization.mdpviz.next_state.NextState(self.next_state.outcome, self.next_state.weight * other))
+            hiive.visualization.mdpviz.next_state.NextState(
+                self.next_state.outcome, self.next_state.weight * other
+            )
+        )
 
-    def apply(self, visitor: 'NodeVisitor'):
+    def apply(self, visitor: "NodeVisitor"):
         return visitor.visit_weighted_state(self)
 
 
@@ -186,7 +196,7 @@ class Conjunction(Node, SupportMapping):
         if self.transition_info.fully_specified:
             compile_transitions(self)
 
-    def apply(self, visitor: 'NodeVisitor'):
+    def apply(self, visitor: "NodeVisitor"):
         return visitor.visit_conjunction(self)
 
 
@@ -203,7 +213,7 @@ class Mapping(Node):
         if self.transition_info.fully_specified:
             compile_transitions(self)
 
-    def apply(self, visitor: 'NodeVisitor'):
+    def apply(self, visitor: "NodeVisitor"):
         return visitor.visit_mapping(self)
 
 
@@ -211,13 +221,17 @@ def compile_transitions(node):
     transitions = node.apply(TransitionVisitor([Transition()]))
     for transition in transitions:
         if transition.state.terminal_state:
-            raise DslSyntaxError('Attempted to specify transition %s for terminal state!' % transition)
-        context.mdp_spec.transition(transition.state, transition.action, transition.outcome)
+            raise DslSyntaxError(
+                "Attempted to specify transition %s for terminal state!" % transition
+            )
+        context.mdp_spec.transition(
+            transition.state, transition.action, transition.outcome
+        )
 
 
 class NodeVisitor(object):
     def visit_atom(self, node: Node):
-        raise AssertionError('This should be unreachable!')
+        raise AssertionError("This should be unreachable!")
 
     def visit_alternatives(self, node: Alternatives):
         return self.visit_atom(node)
@@ -245,7 +259,9 @@ class OutcomeTypeVerifier(NodeVisitor):
     """Verifies that all nodes are valid as outcomes."""
 
     def fail(self, node):
-        raise DslSyntaxError('%s not a valid outcome of a transition (either Reward or State)!' % node)
+        raise DslSyntaxError(
+            "%s not a valid outcome of a transition (either Reward or State)!" % node
+        )
 
     def visit_weighted_state(self, node: WeightedState):
         pass
@@ -276,7 +292,10 @@ class TriggerTypeVerifier(NodeVisitor):
     """Verifies that all types are valid as triggers."""
 
     def fail(self, node):
-        raise DslSyntaxError('%s not a valid trigger for a transition (either a State or an Action)!' % node)
+        raise DslSyntaxError(
+            "%s not a valid trigger for a transition (either a State or an Action)!"
+            % node
+        )
 
     def visit_alternatives(self, node: Alternatives):
         for alternative in node.alternatives:
@@ -316,7 +335,9 @@ class TransitionInfoVisitor(NodeVisitor):
             has_state = has_state and alternative.transition_info.has_state
             has_action = has_action and alternative.transition_info.has_action
             has_outcome = has_outcome and alternative.transition_info.has_outcome
-        return TransitionInfo(has_state=has_state, has_action=has_action, has_outcome=has_outcome)
+        return TransitionInfo(
+            has_state=has_state, has_action=has_action, has_outcome=has_outcome
+        )
 
     def visit_action(self, node: Action):
         return TransitionInfo(has_action=True)
@@ -332,24 +353,34 @@ class TransitionInfoVisitor(NodeVisitor):
         right_transition_info = node.right.transition_info
 
         if left_transition_info.has_state and right_transition_info.has_state:
-            raise DslSyntaxError('%s and %s both have state information!' % (node.left, node.right))
+            raise DslSyntaxError(
+                "%s and %s both have state information!" % (node.left, node.right)
+            )
         if left_transition_info.has_action and right_transition_info.has_action:
-            raise DslSyntaxError('%s and %s both have action information!' % (node.left, node.right))
+            raise DslSyntaxError(
+                "%s and %s both have action information!" % (node.left, node.right)
+            )
 
-        return TransitionInfo(has_action=left_transition_info.has_action or right_transition_info.has_action,
-                              has_state=left_transition_info.has_state or right_transition_info.has_state,
-                              has_outcome=right_transition_info.has_outcome)
+        return TransitionInfo(
+            has_action=left_transition_info.has_action
+            or right_transition_info.has_action,
+            has_state=left_transition_info.has_state or right_transition_info.has_state,
+            has_outcome=right_transition_info.has_outcome,
+        )
 
     def visit_mapping(self, node: Mapping):
-        return TransitionInfo(has_action=node.trigger.transition_info.has_action,
-                              has_state=node.trigger.transition_info.has_state,
-                              has_outcome=True)
+        return TransitionInfo(
+            has_action=node.trigger.transition_info.has_action,
+            has_state=node.trigger.transition_info.has_state,
+            has_outcome=True,
+        )
 
 
 class TransitionVisitor(NodeVisitor):
     """Returns a generator yielding all transitions.
 
     Assumes that the root node's transition info is fully specified."""
+
     def __init__(self, iterator: typing.Iterable[Transition]):
         self.iterator = iterator
 
@@ -392,4 +423,6 @@ class TransitionOutcomeVisitor(NodeVisitor):
 
     def visit_state(self, node: State):
         for transition in self.iterator:
-            yield transition.replace(outcome=hiive.visualization.mdpviz.next_state.NextState(node.state))
+            yield transition.replace(
+                outcome=hiive.visualization.mdpviz.next_state.NextState(node.state)
+            )
